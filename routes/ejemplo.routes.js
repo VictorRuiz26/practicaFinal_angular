@@ -13,10 +13,20 @@ const { validarCampos } = require("../middlewares/validacion");
 
 let router = new Router();
 
+
+// router.post('/', postVideos);
+
+// router.put('/', postVideos);
+
+// router.delete('/', postVideos);
+
+
+
 /**
  * en el objeto router se irán asignando los controladores de la siguiente manera:
  * 
  * 1. petición Get: router.get('/', controladorGet);
+ *                  router.get("/:id_video), controladorGetVideo_id")
  *  - Si se desea se puede aplicar subrutas a la ruta principal que se ha asignado en la clase Server, de la siguiente manera:
  *      router.get('/subruta', controladorSubRuta);
  * 
@@ -39,3 +49,5 @@ let router = new Router();
  * 
  * 
  */
+
+module.exports = router;

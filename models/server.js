@@ -10,7 +10,7 @@ class Server {
         /**
          * Aqui se definen las rutas que va a tener nuestro servidor, para tener a la vista qué endpoints tiene asignado
          */
-        this.videoPath = '/video';
+        this.videoPath = '/api/videos';
 
 
         // Se inician los métodos de middlewares y rutas en el constructor, para que cuando se instancie la clase se generen.
@@ -36,6 +36,7 @@ class Server {
          * Se hace de esta manera para aplicar middlewares en el fichero de rutas.
          */
         // this.app.use(this.videoPath, require('../routes/ejemplo.routes'));
+        this.app.use(this.videoPath, require("../routes/videos.routes"));
     }
 
     async start(){
