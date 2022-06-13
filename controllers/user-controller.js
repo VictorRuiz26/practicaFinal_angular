@@ -3,17 +3,17 @@ const User = require("../models/users.model");
 
 
 const getUsers = async (req, res) => {
-    const productos = await User.find({}, {"__v": 0}).populate('padre');
+    const productos = await User.find({estado: true}, {"__v": 0}).populate('padre');
     const total = productos.length;
     res.send({ total, productos });
 };
 
 const postUsers = async (req, res) => {
-    const { nombre, correo, password } = req.body;
+    const { nombre, correo, password, estado = true } = req.body;
     const token = req.header("Authorization");
     const decoded = jwt_decode(token);
     const padre = decoded.uid;
-    const nuevo_usuario = new User({ nombre, correo, password, padre });
+    const nuevo_usuario = new User({ nombre, correo, password, padre, estado });
     await nuevo_usuario.save();
     res.send(nuevo_usuario);
 }

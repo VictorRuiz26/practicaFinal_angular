@@ -8,7 +8,7 @@ const { getUsers,
     deleteUsers } = require("../controllers/user-controller");
 
 
-const { validarCampos } = require("../middlewares/validacion");
+const { validarCampos, validarUsuario } = require("../middlewares/validacion");
 
 /**
  * Se van importando los diferentes controladores creados en la carpeta controllers.
@@ -25,6 +25,7 @@ router.post('/', [
     check('nombre', 'El nombre no es válido').isString(),
     check('correo', 'El email es obligatorio').notEmpty(),
     check('correo',"El email no es correcto").isEmail(),
+    check('correo').custom(validarUsuario),
     check('password', 'La contraseña es obligatoria').notEmpty(),
     check('password', 'La contraseña no es valida').isLength({ min: 6, max: 20 }),
     check('password', 'La contraseña no es valida').matches('^(?=.*[0-9])(?=.*[A-Z]).{8,32}'),
