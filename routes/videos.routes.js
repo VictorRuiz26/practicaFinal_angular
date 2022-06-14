@@ -9,6 +9,8 @@ const { getVideos,
 
 
 const { validarCampos } = require("../middlewares/validacion");
+const { validarJWT } = require("../middlewares/validar-jwt");
+const { esAdminRole } = require("../middlewares/validar-roles");
 
 /**
  * Se van importando los diferentes controladores creados en la carpeta controllers.
@@ -18,9 +20,13 @@ const { validarCampos } = require("../middlewares/validacion");
 
 let router = new Router();
 
-router.get('/', getVideos);
+router.get('/',[
+    validarJWT
+], getVideos);
 
 router.post('/', [
+    validarJWT,
+    esAdminRole,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     check('url', 'La URL es obligatoria').notEmpty(),
     check('url', 'El formato de URL no es correcto').isURL(),
@@ -30,11 +36,14 @@ router.post('/', [
 ], postVideos);
 
 router.put('/:id', [
+    validarJWT,
     check('id', 'El id no es valido').isMongoId(),
     validarCampos
 ], putVideos);
 
 router.delete('/:id', [
+    validarJWT,
+    esAdminRole,
     check('id', 'El id no es valido').isMongoId(),
     validarCampos
 ], deleteVideos);

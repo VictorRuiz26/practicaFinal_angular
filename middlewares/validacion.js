@@ -18,13 +18,13 @@ const validarUsuario = async correo => {
     //         return Promise.reject('Email already taken')
     //     })
 
-            const existRol = await User.findOne( {correo} );
-        
-            if ( existRol ) {
-        
-                    throw new Error(`El email ${correo} ya está registrado en la BBDD`);
-        
-            }
+    const existRol = await User.findOne({ correo });
+
+    if (existRol) {
+
+        throw new Error(`El email ${correo} ya está registrado en la BBDD`);
+
+    }
 
 }
 
