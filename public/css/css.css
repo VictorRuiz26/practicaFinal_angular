@@ -1,0 +1,66 @@
+html {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+body {
+    background-image: url("../img/fondo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.modal-backdrop {
+    height: 100% !important;
+    width: 100% !important;
+}
+.card {
+    margin: auto;
+    margin-top: 150px;
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(0,0,0,.125) !important;
+}
+.card-title {
+    margin-bottom: 1.5rem; 
+    text-align: center;
+    color: #414560;
+}
+.FormLogin {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
+    margin-top: 6px;
+}
+.img-login {
+    display: block;
+    height: 150px;
+    width: 60%;
+    margin: auto;
+}
+.form-control {
+    background: #414560 !important;
+}
+input {
+    color: #ced4da !important;
+}
+input::placeholder {
+    color: #ced4da !important;
+  }
+
+.form-group {
+    margin-left: 1em;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+}
+#submit {
+    margin: auto;
+    background: #414560 !important;
+}
+.alert-none {
+    display: none;
+}
+.alert-block {
+    display: block;
+}
