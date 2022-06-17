@@ -27,8 +27,10 @@ const postUsers = async (req, res) => {
 
 const putUsers = async (req, res) => {
     const id = req.params.id;
-    const { _id, ...resto } = req.body;
-    await User.findByIdAndUpdate(id, resto);
+    // const { _id, ...resto } = req.body;
+    const { nombre } = req.body;
+
+    await User.findByIdAndUpdate(id, { nombre: nombre });
 
     const result = await User.findById(id);
     res.send(result);
