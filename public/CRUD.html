@@ -61,7 +61,7 @@
         <div class="tabs">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-home" aria-current="page"
+                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-home" ng-click="getUsuarios()" aria-current="page"
                         href="#">User</a>
                 </li>
                 <li class="nav-item">
@@ -100,6 +100,7 @@
                                 </div>
                             </div>
                             <input type="submit" class="btn btn-primary" style="float:right;" value="Add">
+                            <input type="reset" class="btn btn-primary" style="float:right;" value="Clear" ng-model="limpiar">
                         </form>
                     </div>
                 </div>
@@ -114,25 +115,27 @@
                         <span class="correo-span-header"> Correo </span>
                         <span> Opciones </span>
                     </div>
-                    <div id="panel-body-user" ng-repeat="u in usuarios">
-                        <div class="checkbox-container">
-                            <input type="checkbox" name="checkbox" onclick="changeBackground(this)" value="{{u.uid}}"
-                                id="{{u.uid}}">
-                            <label for="{{u.uid}}" class="checkbox">
-                                <div class="checkbox__inner">
-                                    <div class="green__ball"></div>
-                                </div>
-                            </label>
+                    <div id="panel-body-user" ng-repeat="u in usuarios track by $index">
+                        <div class="fila fila-transparent">
+                            <div class="checkbox-container">
+                                <input type="checkbox" name="checkbox" onclick="changeBackground(this)" value="{{u.uid}}"
+                                    id="{{u.uid}}">
+                                <label for="{{u.uid}}" class="checkbox">
+                                    <div class="checkbox__inner">
+                                        <div class="green__ball"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <span class="uid-span"> {{ u.uid }}</span>
+                            <span class="nombre-span"> {{ u.nombre }} </span>
+                            <span class="correo-span"> {{ u.correo }}</span>
+                            <span class="opciones-span" style="font-size: 1.25em;"> <i type="button" data-toggle="modal"
+                                    data-target="#myModal" class="fa fa-pencil"></i>
+                                <i type="button" data-toggle="modal" data-target="#myModal3"
+                                    onclick="viewUser()" class="fa fa-eye view-icon"></i>
+                                <i ng-click="borrarUsuario()" type="button" class="fa fa-times"></i>
+                            </span>
                         </div>
-                        <span class="uid-span"> {{ u.uid }}</span>
-                        <span class="nombre-span"> {{ u.nombre }} </span>
-                        <span class="correo-span"> {{ u.correo }}</span>
-                        <span class="opciones-span" style="font-size: 1.25em;"> <i type="button" data-toggle="modal"
-                                data-target="#myModal" onclick="prueba('${ array[i].uid }')" class="fa fa-pencil"></i>
-                            <i type="button" data-toggle="modal" data-target="#myModal3"
-                                onclick="viewUser()" class="fa fa-eye view-icon"></i>
-                            <i onclick="deleteUser()" type="button" class="fa fa-times"></i>
-                        </span>
                     </div>
                     <button class="btn btn-primary" id="boton-delete-all" onclick="deleteAllUsers()">Delete All
                     </button>
@@ -248,87 +251,88 @@
 
 
             <!-- ******************* MODALS ***************** -->
-
-            <div class="modal fade-scale show active" id="myModal" tabindex="-1" role="dialog"
-                aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Update</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <img class=" col-5 col-sm-3 col-md-3 col-lg-4" src="img/actualizar.png">
-                            <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
-                                <form id="form-update" class="form-update" name="formUpdate">
-                                    <label> Nombre </label>
-                                    <input id="inputUpdateName" class="form-control" type="text" required>
-                                    <label> Correo </label>
-                                    <input id="inputUpdateEmail" class="form-control" type="email" required readonly>
-                                </form>
+                    <!-- MODALS DE USUARIO -->
+            <div ng-controller="usuarios">
+                <div class="modal fade-scale show active" id="myModal" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Update</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="button" id="closeButton" class="btn btn-default"
-                                data-dismiss="modal">Close</button>
-                            <button type="button" id="saveChanges" class="btn btn-primary" data-dismiss="modal"> Save
-                                Changes </button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <img class=" col-5 col-sm-3 col-md-3 col-lg-4" src="img/actualizar.png">
+                                <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
+                                    <form ng-submit="modificarUsuario()" class="form-update" name="formUpdate">
+                                        <label> Nombre </label>
+                                        <input ng-model="user.nombre" class="form-control" type="text" required >
+                                        <label> UID </label>
+                                        <input ng-model="user.uid" class="form-control" type="text" required >
+                                        <label> Correo </label>
+                                        <input ng-model="user.correo" class="form-control" type="email" required readonly > 
+                                        <input type="hidden" ng-model="user.uid" ng-value="user.uid">
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style=" justify-content: center;">
+                                <button type="button" id="closeButton" class="btn btn-default"
+                                    data-dismiss="modal">Close</button>
+                                <button type="button" id="saveChanges" ng-click="modificarUsuario()" class="btn btn-primary" data-dismiss="modal"> Save
+                                    Changes </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="modal fade-scale" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Add User</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <img class=" col-4 col-sm-3 col-md-3 col-lg-4" src="img/add-user-icon.png">
-                            <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor"
-                                style="justify-content: center;">
-                                <form class="form-add-modal" name="ModalAddUser" id="addUserModal"
-                                    onsubmit="pepe('inputAddUserModal','inputAddEmailModal','inputAddPasswordModal')"
-                                    style="grid-template-columns: 25% 55%;">
-                                    <label> Nombre </label>
-                                    <input class="form-control" id="inputAddUserModal" type="text">
-                                    <label> Correo </label>
-                                    <input class="form-control" id="inputAddEmailModal" type="email">
-                                    <label> Password</label>
-                                    <input class="form-control" id="inputAddPasswordModal" type="password">
-                                </form>
+                <div class="modal fade-scale" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Add User</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="input" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button onclick="document.ModalAddUser.onsubmit()" type="input" data-dismiss="modal"
-                                class="btn btn-primary">Add </button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <img class=" col-4 col-sm-3 col-md-3 col-lg-4" src="img/add-user-icon.png">
+                                <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor"
+                                    style="justify-content: center;">
+                                    <form class="form-add-modal" name="ModalAddUser" ng-submit="crearUsuario()" id="addUserModal"
+                                        style="grid-template-columns: 25% 55%;">
+                                        <label> Nombre </label>
+                                        <input class="form-control" ng-model="user.nombre" type="text">
+                                        <label> Correo </label>
+                                        <input class="form-control" ng-model="user.correo" type="email">
+                                        <label> Password</label>
+                                        <input class="form-control" ng-model="user.password" type="password">
+                                        <div class="modal-footer" style=" justify-content: center;">
+                                            <button type="input" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <input type="reset" class="btn btn-primary"  value="Clear" ng-model="limpiar">
+                                            <input type="submit" class="btn btn-primary"  value="Add">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="modal fade-scale" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Show User</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
-                                <form class="form-update" style="grid-template-columns: 25% 55%;">
-                                    <label> Nombre </label>
-                                    <span id="viewName"></span>
-                                    <label> Correo </label>
-                                    <span id="viewEmail"></span></span>
-                                    <label> UID</label>
-                                    <span id="viewUID"></span>
-                                </form>
+                <div class="modal fade-scale" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Show User</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="input" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
+                                    <form class="form-update" style="grid-template-columns: 25% 55%;">
+                                        <label> Nombre </label>
+                                        <span id="viewName"></span>
+                                        <label> Correo </label>
+                                        <span id="viewEmail"></span></span>
+                                        <label> UID</label>
+                                        <span id="viewUID"></span>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style=" justify-content: center;">
+                                <button type="input" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>

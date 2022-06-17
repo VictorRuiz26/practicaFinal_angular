@@ -1,7 +1,5 @@
 'use strict';
 
-const { get } = require("mongoose");
-
 // al angula.module se le pone el nombre del módulo y como segundo argumento las dependencias de otros módulos de angular
 /**
  * controller es otro objeto que se crea, contiene el scope que se encarga de cambiar las vistas y demás
@@ -36,12 +34,34 @@ angular.module("Trabajo", [])
          *  
          */
 
-        $scope.initialize();
+        // $scope.initialize();
     })
 
     .controller("usuarios", function ($scope, $http) {
         $scope.user = {};
         $scope.usuarios = [];
+
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU0ODAzMDcsImV4cCI6MTY1NTQ5ODMwN30.LjmJ_ANQwEygDJ_lQ5K5dmm1uav-fh82CbyGqeMMrVI";
+
+        $scope.modificarUsuario = function () {
+
+            $http({
+                method: 'PUT',
+                url: $scope.host + '/api/users/' + $scope.user.uid,
+                data: JSON.stringify($scope.user),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            }).then(function (response) {
+                $scope.user = {};
+                console.log(response);
+                $scope.getUsuarios();
+            }).catch(function (error) {
+                console.log(error);
+            })
+
+        };
 
         $scope.crearUsuario = function () {
 
@@ -51,22 +71,68 @@ angular.module("Trabajo", [])
                 data: JSON.stringify($scope.user),
                 headers: {
                     'Content-Type': 'Application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTUzMTEyOTUsImV4cCI6MTY1NTMyOTI5NX0.K8an0j7B044cRYwUFLETIUwZPvS00Euzafz057jH1fw'
+                    'Authorization': 'Bearer ' + token
                 }
-            }).then(function (response) { console.log(response);}) // if http code == 200
-                .catch(function (error) { console.log(error); }) // else
+            }).then(function (response) {
+                $scope.user = {};
+                console.log(response);
+                $scope.getUsuarios();
+            })
+                .catch(function (error) { console.log(error); })
         };
 
-        $scope.getUsuarios = function() {
+        $scope.getUsuarios = function () {
+
             $http({
-                method: get,
-                url: $scope.host + 'api/users',
+                method: "GET",
+                url: $scope.host + '/api/users',
                 headers: {
                     'Content-Type': 'Application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTUzMTEyOTUsImV4cCI6MTY1NTMyOTI5NX0.K8an0j7B044cRYwUFLETIUwZPvS00Euzafz057jH1fw'
+                    'Authorization': 'Bearer ' + token
                 }
+            }).then(function (response) {
+                $scope.usuarios = response.data.productos;
+                console.log(response);
+            }).catch(function (error) {
+                console.error(error);
             })
         };
+
+
+        $scope.borrarUsuario = function () {
+
+            navigator.clipboard.readText()
+            .then(text => {
+                
+                    const ok = window.confirm("¿Estás seguro de que deseas eliminar al usuario " + text + "?");
+                    if (ok) {
+                        $http({
+                            method: 'DELETE',
+                            url: $scope.host + '/api/users/' + text,
+                            headers: {
+                                'Content-Type': 'Application/json',
+                                'Authorization': 'Bearer ' + token
+                            }
+                        }).then(function (response) {
+                            $scope.user = {};
+                            console.log(response);
+                            $scope.getUsuarios();
+                        }).catch(function (error) {
+                            console.log(error);
+                        })
+                    }
+                    console.log('Pasted content: ', text);
+                })
+                .catch(err => {
+                    
+                    console.error('Failed to read clipboard contents: ', err);
+
+
+                });
+
+
+        }
+
 
         $scope.getUsuarios();
     });
