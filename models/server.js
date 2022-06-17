@@ -13,6 +13,7 @@ class Server {
         this.videoPath = '/api/videos';
         this.userPath = '/api/users';
         this.authPath = '/api/auth';
+        this.categoryPath = '/api/categories';
 
         // Se inician los métodos de middlewares y rutas en el constructor, para que cuando se instancie la clase se generen.
         this.middlewares();
@@ -40,6 +41,7 @@ class Server {
         this.app.use(this.authPath, require("../routes/auth.routes"));
         this.app.use(this.videoPath, require("../routes/videos.routes"));
         this.app.use(this.userPath, require("../routes/users.routes"));
+        this.app.use(this.categoryPath, require("../routes/categories.routes"));
     }
 
     async start(){
