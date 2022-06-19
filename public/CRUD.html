@@ -121,7 +121,6 @@
 
                 <div class="panel">
                     <div class="panel-header">
-                        <span> Select </span>
                         <span class="uid-span-header"> UID </span>
                         <span> Nombre</span>
                         <span class="correo-span-header"> Correo </span>
@@ -129,22 +128,14 @@
                     </div>
                     <div id="panel-body-user" ng-repeat="u in usuarios track by $index">
                         <div class="fila fila-transparent">
-                            <div class="checkbox-container">
-                                <input type="checkbox" name="checkbox" value="{{u.uid}}" id="{{u.uid}}">
-                                <label for="{{u.uid}}" class="checkbox">
-                                    <div class="checkbox__inner">
-                                        <div class="green__ball"></div>
-                                    </div>
-                                </label>
-                            </div>
                             <span class="uid-span"> {{ u.uid }}</span>
                             <span class="nombre-span"> {{ u.nombre }} </span>
                             <span class="correo-span"> {{ u.correo }}</span>
                             <span class="opciones-span" style="font-size: 1.25em;"> <i type="button" data-toggle="modal"
                                     data-target="#myModal" class="fa fa-pencil"></i>
                                 <!-- //TODO: Poner modal de ver usuario, o eliminarlo directamente -->
-                                <i type="button" data-toggle="modal" data-target="#myModal3" onclick="viewUser()"
-                                    class="fa fa-eye view-icon"></i>
+                               <!-- <i type="button" data-toggle="modal" data-target="#myModal3" onclick="viewUser()"
+                                    class="fa fa-eye view-icon"></i> -->
                                 <i ng-click="borrarUsuario()" type="button" class="fa fa-times"></i>
                             </span>
                         </div>
@@ -185,29 +176,20 @@
 
                 <div class="panel">
                     <div class="panel-header">
-                        <span> Select </span>
                         <span class="uid-span-header"> UID </span>
                         <span> Nombre </span>
                         <span> Opciones </span>
                     </div>
                     <div id="panel-body-categorias" ng-repeat="c in categorias track by $index">
                         <div class="fila fila-transparent">
-                            <div class="checkbox-container">
-                                <input type="checkbox" name="checkboxCategoria" value="{{c._id}}" id="{{c._id}}">
-                                <label for="{{c._id}}" class="checkbox">
-                                    <div class="checkbox__inner">
-                                        <div class="green__ball"></div>
-                                    </div>
-                                </label>
-                            </div>
                             <span class="uid-span"> {{c._id}} </span>
                             <span class="nombre-span"> {{c.nombre}} </span>
                             <span class="opciones-span" style="font-size: 1.25em;">
                                 <i type="button" data-toggle="modal" data-target="#myModal4" class="fa fa-pencil">
                                 </i>
-                                <i type="button" data-toggle="modal" data-target="#myModal5"
+                                <!--<i type="button" data-toggle="modal" data-target="#myModal5"
                                     class="fa fa-eye view-icon">
-                                </i>
+                                </i> -->
                                 <i ng-click="borrarCategoria()" type="button" class="fa fa-times">
                                 </i>
                             </span>
@@ -259,7 +241,6 @@
 
                 <div class="panel panel-video">
                     <div class="panel-header">
-                        <span> Select </span>
                         <span class="uid-span-header"> vID </span>
                         <span> Nombre </span>
                         <span class="correo-span-header"> Categoría </span>
@@ -267,21 +248,13 @@
                     </div>
                     <div id="panel-body-videos" ng-repeat="v in videos track by $index">
                         <div class="fila fila-transparent">
-                            <div class="checkbox-container">
-                                <input type="checkbox" name="checkboxVideo" value="{{v._id}}" id="{{v_id}}">
-                                <label for="{{v_id}}" class="checkbox">
-                                    <div class="checkbox__inner">
-                                        <div class="green__ball"></div>
-                                    </div>
-                                </label>
-                            </div>
                             <span class="uid-span"> {{v._id}}</span>
                             <span class="nombre-span"> <a href="{{v.url}}" target="_blank"> {{v.nombre}}</a> </span>
                             <span class="categoria-span"> {{v.categoria.nombre}} </span>
                             <span class="opciones-span" style="font-size: 1.25em;">
                                 <i type="button" data-toggle="modal" data-target="#myModal8" class="fa fa-pencil"></i>
-                                <i type="button" data-toggle="modal" data-target="#myModal9"
-                                    class="fa fa-eye view-icon"></i>
+                                <!--<i type="button" data-toggle="modal" data-target="#myModal9"
+                                    class="fa fa-eye view-icon"></i> -->
                                 <i ng-click="borrarVideo()" type="button" class="fa fa-times"></i>
                             </span>
                         </div>

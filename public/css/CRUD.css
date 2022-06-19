@@ -34,7 +34,7 @@
 }
 .panel-header {
     display: grid;
-    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-columns: 40% 20% 20% 20%;
     font-weight: bold;
     padding: 8px;
 }
@@ -42,7 +42,7 @@
 .fila {
     display: grid;
     background-color: transparent;
-    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-columns: 40% 20% 20% 20%;
     padding: 8px;
 }
 
@@ -231,16 +231,16 @@ i.view-icon {
 
 @media (max-width: 1550px) {
     .panel-header {
-        grid-template-columns: 10% 33% 17% 30% 10%;
+        grid-template-columns: 43% 17% 30% 10%;
     }
     .fila {
-        grid-template-columns: 10% 33% 17% 30% 10%;
+        grid-template-columns: 43% 17% 30% 10%;
     }
     .panel-video .panel-header {
-        grid-template-columns: 10% 35% 30% 15% 10%;
+        grid-template-columns: 45% 30% 15% 10%;
     }
     #panel-body-videos .fila {
-        grid-template-columns: 10% 35% 30% 15% 10%;
+        grid-template-columns: 45% 30% 15% 10%;
     }
   }
 
@@ -256,17 +256,17 @@ i.view-icon {
 
   @media (max-width: 840px) {
     .panel-header {
-        grid-template-columns: 15% 25% 45% 15%;
+        grid-template-columns: 45% 40% 15%;
     }
     .fila {
-        grid-template-columns: 15% 25% 45% 15%;
+        grid-template-columns: 45% 40% 15%;
     }
 
     .panel-video .panel-header {
-        grid-template-columns: 10% 40% 30% 20%;
+        grid-template-columns: 50% 30% 20%;
     }
     #panel-body-videos .fila {
-        grid-template-columns: 10% 40% 30% 20%;
+        grid-template-columns: 50% 30% 20%;
     }
 
     .uid-span-header {

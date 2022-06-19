@@ -12,7 +12,7 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
     .controller("main_ctlr", function ($scope) {
 
         $scope.host = "http://localhost:8080";
-        $scope.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmFmM2VkZmYxZTk5MTBlNzJkOWYwZjciLCJpYXQiOjE2NTU2NTIxMTQsImV4cCI6MTY1NTY3MDExNH0.EzonNuTtLCBZyapTgVp38mU4rcgTbYRj_8sC2y1v4OM";
+        $scope.token =  window.sessionStorage.getItem("tokenUser");
 
         $scope.cerrarSesion = function () {
             console.log('ESTAMOS CON ANGULAR');
@@ -41,15 +41,13 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
                 $scope.video = {};
                 let cats =  response.data.productos;
                 cats.forEach( indice => {
-                    console.log(indice.nombre);
                     let categoriaArray = new Array();
                     $scope.array[indice.nombre] = categoriaArray 
                 });
             })
-                .catch(function (error) { console.log(error); })
+                .catch(function (error) {  window.location.href="login.html" })
 
-            console.log($scope.categorias);
-
+          
             /**
              * Obtencion de los videos
              */
@@ -62,16 +60,12 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
                 }
             }).then(function (response) {
                 $scope.video = {};
-                console.log(response);
                 let cats =  response.data.productos;
-                console.log(cats);
                 cats.forEach( indice => {
-                    console.log(indice.categoria.nombre);
                     if ($scope.array[indice.categoria.nombre] != null) $scope.array[indice.categoria.nombre].push(indice.url); 
                 });
-                console.log( $scope.array);
             })
-                .catch(function (error) { console.log(error); })
+                .catch(function (error) {   window.location.href="login.html"})
         };
 
         $scope.getVideos();

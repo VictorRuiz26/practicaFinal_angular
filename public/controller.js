@@ -42,7 +42,7 @@ angular.module("Trabajo", [])
                 // console.log(response);
                 $scope.getUsuarios();
             }).catch(function (error) {
-                console.log(error);
+                window.location.href="login.html" ;
             })
 
         };
@@ -62,7 +62,7 @@ angular.module("Trabajo", [])
                 // console.log(response);
                 $scope.getUsuarios();
             })
-                .catch(function (error) { console.log(error); })
+                .catch(function (error) {    window.location.href="login.html" ; })
         };
 
         $scope.getUsuarios = function () {
@@ -78,7 +78,7 @@ angular.module("Trabajo", [])
                 $scope.usuarios = response.data.productos;
                 // console.log(response);
             }).catch(function (error) {
-                console.error(error);
+                window.location.href="login.html" ;
             })
         };
 
@@ -103,7 +103,7 @@ angular.module("Trabajo", [])
                             // console.log(response);
                             $scope.getUsuarios();
                         }).catch(function (error) {
-                            console.log(error);
+                            window.location.href="login.html" ;
                         })
                     }
                     console.log('Pasted content: ', text);
