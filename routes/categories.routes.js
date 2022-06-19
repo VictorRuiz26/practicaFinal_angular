@@ -26,6 +26,11 @@ router.get('/', [
     validarCampos
 ], getCategories);
 
+router.get('/padre', [
+    validarJWT,
+    validarCampos
+], getCategories);
+
 router.post('/', [
     validarJWT,
     esAdminRole,

@@ -13,7 +13,7 @@ const validarJWT = async (req, res, next) => {
 
     if (letra != 'Bearer') {
         return res.status(401).json({
-            msg: "Token no valido"
+            msg: "Token no valido a1111"
         })
     }
 
@@ -47,7 +47,7 @@ const validarJWT = async (req, res, next) => {
     } catch (error) {
         // console.log(error);
         res.status(401).json({
-            msg: "Token no valido"
+            msg: "Token no valido b1111"
         })
     }
 
