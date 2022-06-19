@@ -12,30 +12,12 @@ angular.module("Trabajo", [])
         $scope.host = "http://localhost:8080";
         $scope.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU2MjQwMDEsImV4cCI6MTY1NTY0MjAwMX0.3M9ITt3shDmMgT7tULFtfCNPGtvOaTeEUns-lxQqaGM";
 
-        $scope.initialize = function () {
-            $scope.nombre = "Juan";
-            $scope.subjects = [
-                { id: 504104013, name: 'LABORATORIO DE INGENIERÍA DE SOFTWARE', semester: 'C2', ects: 6, dpt: 'TIC' },
-                { id: 504104014, name: 'TEORÍA DE ONDAS', semester: 'C1', ects: 6, dpt: 'Electromagnetismo' },
-                { id: 504104015, name: 'CÁLCULO DIFERENCIAL', semester: 'C1', ects: 6, dpt: 'Matemáticas' }
-            ];
-        };
-
         $scope.cerrarSesion = function () {
             console.log('ESTAMOS CON ANGULAR');
             sessionStorage.clear()
             // sessionStorage.removeItem('tokenUser');
             window.location.href = "login.html";
         }
-
-        /**
-         * Cuidado que si pusiéramos en la linea de arriba }(); para ejecutar esa misma funcion lo que se hace
-         * es asignar a la propiedad initialize el valor de retorno de la funcion.
-         * Luego no podríamos ejecutar la funcion 
-         *  
-         */
-
-        // $scope.initialize();
     })
 
     .controller("usuarios", function ($scope, $http) {
@@ -92,7 +74,7 @@ angular.module("Trabajo", [])
                 }
             }).then(function (response) {
                 $scope.usuarios = response.data.productos;
-                console.log(response);
+                // console.log(response);
             }).catch(function (error) {
                 console.error(error);
             })
@@ -104,7 +86,8 @@ angular.module("Trabajo", [])
             navigator.clipboard.readText()
                 .then(text => {
 
-                    const ok = window.confirm("¿Estás seguro de que deseas eliminar al usuario " + text + "?");
+                    const ok = window.confirm("Asegurese de que ha copiado el ID el usuario correctamente\n" + 
+                    "¿Está seguro de que deseas eliminar al usuario " + text + "?");
                     if (ok) {
                         $http({
                             method: 'DELETE',
@@ -153,7 +136,7 @@ angular.module("Trabajo", [])
                 }
             }).then(function (response) {
                 $scope.categoria = {};
-                console.log(response);
+                // console.log(response);
                 $scope.categorias = response.data.productos;
             })
                 .catch(function (error) { console.log(error); })
@@ -182,7 +165,8 @@ angular.module("Trabajo", [])
             navigator.clipboard.readText()
                 .then(text => {
 
-                    const ok = window.confirm("¿Estás seguro de que deseas eliminar la categoria " + text + "?");
+                    const ok = window.confirm("Asegurese de que ha copiado el ID de la categoria correctamente\n" + 
+                    "¿Está seguro de que deseas eliminar la categoria " + text + "?");
                     if (ok) {
                         $http({
                             method: 'DELETE',
@@ -240,4 +224,124 @@ angular.module("Trabajo", [])
         };
 
         $scope.getCategorias();
-    });
+    })
+
+    .controller("videos", function ($scope, $http) {
+        $scope.videos = [];
+        $scope.categorias = [];
+        $scope.video = {};
+
+        $scope.getVideos = async function () {
+            /**
+             * Necesito recuperar las categorias para hacer el select, 
+             * esto se podria optimizar con un servicio en el controlador
+             */
+            await $http({
+                method: 'GET',
+                url: $scope.host + '/api/categories',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.video = {};
+                console.log(response);
+                $scope.categorias = response.data.productos;
+            })
+                .catch(function (error) { console.log(error); })
+
+            console.log($scope.categorias);
+
+            /**
+             * Obtencion de los videos
+             */
+            $http({
+                method: 'GET',
+                url: $scope.host + '/api/videos',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.video = {};
+                console.log(response);
+                $scope.videos = response.data.productos;
+            })
+                .catch(function (error) { console.log(error); })
+        };
+
+        $scope.crearVideo = function () {
+            console.log('Creando video...');
+            // console.log($scope.categorias);
+            console.log('El valor de la categoria seleccionada es: ');
+            console.log($scope.video.categoria);
+
+            console.log('url previa: ' + $scope.video.url);
+            $scope.video.url = $scope.video.url.replace("watch?v=", "embed/");
+            console.log('url posterior: ' + $scope.video.url);
+
+            $http({
+                method: 'POST',
+                url: $scope.host + '/api/videos',
+                data: JSON.stringify($scope.video),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.video = {};
+                console.log(response);
+                $scope.getVideos();
+            })
+                .catch(function (error) { console.log(error); })
+        };
+
+        $scope.modificarVideo = function () {
+            $http({
+                method: 'PUT',
+                url: $scope.host + '/api/videos/' + $scope.video._id,
+                data: JSON.stringify($scope.video),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.video = {};
+                // console.log(response);
+                $scope.getVideos();
+            }).catch(function (error) {
+                console.log(error);
+            })
+        };
+        $scope.borrarVideo = function () {
+            console.log('Borrar Video');
+            navigator.clipboard.readText()
+                .then(text => {
+
+                    const ok = window.confirm("Asegurese de que ha copiado el ID del video correctamente\n" + 
+                    "¿Está seguro de que deseas eliminar el video " + text + "?");
+                    if (ok) {
+                        $http({
+                            method: 'DELETE',
+                            url: $scope.host + '/api/videos/' + text,
+                            headers: {
+                                'Content-Type': 'Application/json',
+                                'Authorization': 'Bearer ' + $scope.token
+                            }
+                        }).then(function (response) {
+                            $scope.video = {};
+                            // console.log(response);
+                            $scope.getVideos();
+                        }).catch(function (error) {
+                            console.log(error);
+                        })
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to read clipboard contents: ', err);
+                });
+        };
+
+
+        $scope.getVideos();
+    })
