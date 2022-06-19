@@ -33,12 +33,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="controller_user.js"></script>
 </head>
 
 
 
 
-<body onload="getVideos();">
+<body  ng-app="Videos" , ng-controller="main_ctlr">
 
     <header class="bg-dark">
         <nav>
@@ -47,15 +49,20 @@
                 <a class="titulo-nav" href=""> VIDLIBRARY </a>
                 <div class="right-panel">
                     <ul>
-                        <button type="button" class="btn btn-light" onclick="cerrarSesion()">Sign Out</button>
+                        <button type="button" class="btn btn-light" ng-click="cerrarSesion()">Sign Out</button>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main id="cuerpo" class="container">
-
+    <main id="cuerpo" class="container" ng-controller="videos">
+            <section ng-repeat="(key,value) in array" ng-if="value.length > 0"> 
+              <h2> {{ key }} </h2>
+              <div ng-repeat="v in value track by $index" class="video1" style="display: inline-block; margin-right: 20px;">
+                <iframe width="400" height="250" ng-src="{{v  | trusted}}"  title="YouTube video player" frameborder="10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </section>
     </main>
 
 

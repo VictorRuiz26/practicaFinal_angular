@@ -21,8 +21,14 @@ const { esAdminRole } = require("../middlewares/validar-roles");
 let router = new Router();
 
 router.get('/',[
+    validarJWT,
+    esAdminRole
+], getVideos);
+
+router.get('/padre',[
     validarJWT
 ], getVideos);
+
 
 router.post('/', [
     validarJWT,

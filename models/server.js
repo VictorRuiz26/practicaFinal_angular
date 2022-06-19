@@ -14,6 +14,7 @@ class Server {
         this.userPath = '/api/users';
         this.authPath = '/api/auth';
         this.categoryPath = '/api/categories';
+       
 
         // Se inician los métodos de middlewares y rutas en el constructor, para que cuando se instancie la clase se generen.
         this.middlewares();
