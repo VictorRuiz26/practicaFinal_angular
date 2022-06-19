@@ -10,6 +10,7 @@ angular.module("Trabajo", [])
     .controller("main_ctlr", function ($scope) {
 
         $scope.host = "http://localhost:8080";
+        $scope.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU2MjQwMDEsImV4cCI6MTY1NTY0MjAwMX0.3M9ITt3shDmMgT7tULFtfCNPGtvOaTeEUns-lxQqaGM";
 
         $scope.initialize = function () {
             $scope.nombre = "Juan";
@@ -21,7 +22,7 @@ angular.module("Trabajo", [])
         };
 
         $scope.cerrarSesion = function () {
-            console.log('ESTAMOS CON ANGULAR LOCO');
+            console.log('ESTAMOS CON ANGULAR');
             sessionStorage.clear()
             // sessionStorage.removeItem('tokenUser');
             window.location.href = "login.html";
@@ -41,7 +42,6 @@ angular.module("Trabajo", [])
         $scope.user = {};
         $scope.usuarios = [];
 
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU0ODAzMDcsImV4cCI6MTY1NTQ5ODMwN30.LjmJ_ANQwEygDJ_lQ5K5dmm1uav-fh82CbyGqeMMrVI";
 
         $scope.modificarUsuario = function () {
 
@@ -51,11 +51,11 @@ angular.module("Trabajo", [])
                 data: JSON.stringify($scope.user),
                 headers: {
                     'Content-Type': 'Application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + $scope.token
                 }
             }).then(function (response) {
                 $scope.user = {};
-                console.log(response);
+                // console.log(response);
                 $scope.getUsuarios();
             }).catch(function (error) {
                 console.log(error);
@@ -71,11 +71,11 @@ angular.module("Trabajo", [])
                 data: JSON.stringify($scope.user),
                 headers: {
                     'Content-Type': 'Application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + $scope.token
                 }
             }).then(function (response) {
                 $scope.user = {};
-                console.log(response);
+                // console.log(response);
                 $scope.getUsuarios();
             })
                 .catch(function (error) { console.log(error); })
@@ -88,7 +88,7 @@ angular.module("Trabajo", [])
                 url: $scope.host + '/api/users',
                 headers: {
                     'Content-Type': 'Application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': 'Bearer ' + $scope.token
                 }
             }).then(function (response) {
                 $scope.usuarios = response.data.productos;
@@ -102,8 +102,8 @@ angular.module("Trabajo", [])
         $scope.borrarUsuario = function () {
 
             navigator.clipboard.readText()
-            .then(text => {
-                
+                .then(text => {
+
                     const ok = window.confirm("¿Estás seguro de que deseas eliminar al usuario " + text + "?");
                     if (ok) {
                         $http({
@@ -111,11 +111,11 @@ angular.module("Trabajo", [])
                             url: $scope.host + '/api/users/' + text,
                             headers: {
                                 'Content-Type': 'Application/json',
-                                'Authorization': 'Bearer ' + token
+                                'Authorization': 'Bearer ' + $scope.token
                             }
                         }).then(function (response) {
                             $scope.user = {};
-                            console.log(response);
+                            // console.log(response);
                             $scope.getUsuarios();
                         }).catch(function (error) {
                             console.log(error);
@@ -124,7 +124,7 @@ angular.module("Trabajo", [])
                     console.log('Pasted content: ', text);
                 })
                 .catch(err => {
-                    
+
                     console.error('Failed to read clipboard contents: ', err);
 
 
@@ -135,4 +135,109 @@ angular.module("Trabajo", [])
 
 
         $scope.getUsuarios();
+    })
+
+    .controller("categorias", function ($scope, $http) {
+        $scope.categoria = {};
+        $scope.categorias = [];
+
+        $scope.getCategorias = function () {
+            // console.log('CONTROLADOR FUNCIONANDO EN TABS');
+
+            $http({
+                method: 'GET',
+                url: $scope.host + '/api/categories',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.categoria = {};
+                console.log(response);
+                $scope.categorias = response.data.productos;
+            })
+                .catch(function (error) { console.log(error); })
+
+        }
+
+        $scope.crearCategoria = function () {
+            $http({
+                method: 'POST',
+                url: $scope.host + '/api/categories',
+                data: JSON.stringify($scope.categoria),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.categoria = {};
+                // console.log(response);
+                $scope.getCategorias();
+            })
+                .catch(function (error) { console.log(error); })
+        };
+
+        $scope.borrarCategoria = function () {
+            console.log('Borrar categoria');
+            navigator.clipboard.readText()
+                .then(text => {
+
+                    const ok = window.confirm("¿Estás seguro de que deseas eliminar la categoria " + text + "?");
+                    if (ok) {
+                        $http({
+                            method: 'DELETE',
+                            url: $scope.host + '/api/categories/' + text,
+                            headers: {
+                                'Content-Type': 'Application/json',
+                                'Authorization': 'Bearer ' + $scope.token
+                            }
+                        }).then(function (response) {
+                            $scope.categoria = {};
+                            // console.log(response);
+                            $scope.getCategorias();
+                        }).catch(function (error) {
+                            console.log(error);
+                        })
+                    }
+                    console.log('Pasted content: ', text);
+                })
+                .catch(err => {
+
+                    console.error('Failed to read clipboard contents: ', err);
+
+
+                });
+        };
+
+        $scope.verCategoria = function (id, nombre) {
+            console.log('Ver categoria');
+            //TODO: hacer que se de valor al objeto categoria (scope.categoria) para que se muestre en el modal 
+            // NO FUNCIONA 
+            // console.log(id);
+            // console.log(nombre);
+            // $scope.categoriaShow._id = id;
+            // $scope.categoriaShow.nombre = nombre;
+            // console.log($scope.categoriaShow);
+        };
+
+        $scope.modificarCategoria = function () {
+            // console.log('Modificar categoria');
+            $http({
+                method: 'PUT',
+                url: $scope.host + '/api/categories/' + $scope.categoria._id,
+                data: JSON.stringify($scope.categoria),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + $scope.token
+                }
+            }).then(function (response) {
+                $scope.categoria = {};
+                // console.log(response);
+                $scope.getCategorias();
+            }).catch(function (error) {
+                console.log(error);
+            })
+        };
+
+        $scope.getCategorias();
     });
