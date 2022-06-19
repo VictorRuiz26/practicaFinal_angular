@@ -60,7 +60,7 @@
     <main>
         <div class="tabs">
             <ul class="nav nav-tabs">
-                <li ng-controller="usuarios" class="nav-item">
+                <!-- <li ng-controller="usuarios" class="nav-item">
                     <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-home" ng-click="getUsuarios()"
                         aria-current="page" href="#">User</a>
                 </li>
@@ -68,9 +68,19 @@
                     <a class="nav-link" ng-click="getCategorias()" data-bs-toggle="tab" data-bs-target="#categorias"
                         href="#">Categoría</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" onclick="getVideos()" data-bs-toggle="tab" data-bs-target="#videos"
+                <li ng-controller="videos" class="nav-item">
+                    <a class="nav-link" ng-click="getVideos()" data-bs-toggle="tab" data-bs-target="#videos"
                         href="#">Video</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-home" "
+                        aria-current=" page" href="#">User</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#categorias" href="#">Categoría</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" data-bs-target="#videos" href="#">Video</a>
                 </li>
             </ul>
         </div>
@@ -166,6 +176,8 @@
                                 </div>
                             </div>
                             <input type="submit" class="btn btn-primary" style="float:right;" value="Add">
+                            <input type="reset" class="btn btn-primary" style="float:right;" value="Clear"
+                                ng-model="limpiar">
                         </form>
                     </div>
                 </div>
@@ -213,7 +225,7 @@
 
             </div>
 
-            <div id="videos" class="tab-pane fade" role="tabpanel">
+            <div id="videos" class="tab-pane fade" role="tabpanel" ng-controller="videos">
                 <div class="card card-add-user ">
                     <div class="card-header">
                         <span>Añadir Video</span>
@@ -221,23 +233,25 @@
                             class="fa fa-plus add-user-icon" aria-hidden="true"></i>
                     </div>
                     <div class="card-body">
-                        <form method="POST" onsubmit="addVideo('inputNameVideo', 'inputURLVideo', 'nombreCategoría')"
-                            id="addVideo-form">
+                        <form ng-submit="crearVideo()" id="addVideo-form">
                             <div class="group-form">
                                 <div class="group-form-component">
                                     <label> Nombre </label>
-                                    <input class="form-control" type="text" id="inputNameVideo"
+                                    <input class="form-control" type="text" ng-model="video.nombre"
                                         style="margin-right: 25px;">
                                     <label> URL </label>
-                                    <input class="form-control" type="url" id="inputURLVideo"
+                                    <input class="form-control" type="url" ng-model="video.url"
                                         style="margin-right: 25px;">
                                     <label> Categoría</label>
-                                    <select class="form-control" id="nombreCategoría">
-
+                                    <select class="form-control" ng-model="video.categoria"
+                                        ng-options="categoria._id as categoria.nombre for categoria in categorias">
+                                        <!-- <select ng-model="myColor" ng-options="color.name for color in colors"></select> -->
                                     </select>
                                 </div>
                             </div>
                             <input type="submit" class="btn btn-primary" style="float:right;" value="Add">
+                            <input type="reset" class="btn btn-primary" style="float:right;" value="Clear"
+                                ng-model="limpiar">
                         </form>
                     </div>
                 </div>
@@ -250,10 +264,26 @@
                         <span class="correo-span-header"> Categoría </span>
                         <span> Opciones </span>
                     </div>
-                    <div id="panel-body-videos">
-
-                        <!-- RELLENADO POR JAVASCRIPT -->
-
+                    <div id="panel-body-videos" ng-repeat="v in videos track by $index">
+                        <div class="fila fila-transparent">
+                            <div class="checkbox-container">
+                                <input type="checkbox" name="checkboxVideo" value="{{v._id}}" id="{{v_id}}">
+                                <label for="{{v_id}}" class="checkbox">
+                                    <div class="checkbox__inner">
+                                        <div class="green__ball"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <span class="uid-span"> {{v._id}}</span>
+                            <span class="nombre-span"> <a href="{{v.url}}" target="_blank"> {{v.nombre}}</a> </span>
+                            <span class="categoria-span"> {{v.categoria.nombre}} </span>
+                            <span class="opciones-span" style="font-size: 1.25em;">
+                                <i type="button" data-toggle="modal" data-target="#myModal8" class="fa fa-pencil"></i>
+                                <i type="button" data-toggle="modal" data-target="#myModal9"
+                                    class="fa fa-eye view-icon"></i>
+                                <i ng-click="borrarVideo()" type="button" class="fa fa-times"></i>
+                            </span>
+                        </div>
                     </div>
 
                     <!-- //TODO: Cambiar ids y funciones asociadas para el borrado -->
@@ -448,96 +478,100 @@
                 </div>
             </div>
 
-            <div class="modal fade-scale" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: rgb(98, 152, 223);">
-                            <h4 class="modal-title" id="myModalLabel">Add Video</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <img class=" col-4 col-sm-4 col-md-4 col-lg-4" style="margin-bottom: 20px;"
-                                src="img/add-cat-icon.png">
-                            <div class="col-12 col-sm-8 col-md-8 col-lg-8 update-contenedor"
-                                style="justify-content: center;">
-                                <form class="form-add-modal" name="ModalAddVideo" id="addVideoModal"
-                                    onsubmit="addVideo('inputAddVideoNameModal', 'inputAddVideoURLModal', 'inputAddVideoCatModal')"
-                                    style="grid-template-columns: 25% 55%;">
-                                    <label> Nombre </label>
-                                    <input class="form-control" id="inputAddVideoNameModal" type="text">
-                                    <label> URL </label>
-                                    <input class="form-control" id="inputAddVideoURLModal" type="text">
-                                    <label> Categoría </label>
-                                    <select class="form-control" id="inputAddVideoCatModal">
-
-                                    </select>
-                                </form>
+            <div ng-controller="videos">
+                <div class="modal fade-scale" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: rgb(98, 152, 223);">
+                                <h4 class="modal-title" id="myModalLabel">Add Video</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="input" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button onclick="document.ModalAddVideo.onsubmit()" type="input" data-dismiss="modal"
-                                class="btn btn-primary" style="background-color: rgb(98, 152, 223);">Add </button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <img class=" col-4 col-sm-4 col-md-4 col-lg-4" style="margin-bottom: 20px;"
+                                    src="img/add-cat-icon.png">
+                                <div class="col-12 col-sm-8 col-md-8 col-lg-8 update-contenedor"
+                                    style="justify-content: center;">
+                                    <form class="form-add-modal" name="ModalAddVideo" id="addVideoModal"
+                                        ng-submit="crearVideo()" style="grid-template-columns: 25% 55%;">
+                                        <label> Nombre </label>
+                                        <input class="form-control" ng-model="video.nombre" type="text">
+                                        <label> URL </label>
+                                        <input class="form-control" ng-model="video.url" type="text">
+                                        <label> Categoría </label>
+                                        <select class=" form-control" ng-model="video.categoria"
+                                            ng-options="categoria._id as categoria.nombre for categoria in categorias">
+                                        </select>
+
+                                        <div class="modal-footer" style=" justify-content: center;">
+                                            <button type="input" class="btn btn-default"
+                                                data-dismiss="modal">Close</button>
+                                            <input type="reset" class="btn btn-primary" value="Clear"
+                                                ng-model="limpiar">
+                                            <input type="submit" class="btn btn-primary" value="Add">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="modal fade-scale show active" id="myModal8" tabindex="-1" role="dialog"
-                aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Update</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <img class=" col-5 col-sm-3 col-md-3 col-lg-4" src="img/actualizar.png">
-                            <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
-                                <form id="form-update-categoria" class="form-update" name="formUpdateCategoria"
-                                    style="align-items:center;">
-                                    <label> Nombre </label>
-                                    <input id="inputUpdateNameVideo" class="form-control" type="text" required>
-                                    <label> URL </label>
-                                    <input class="form-control" type="url" id="inputUpdateURLVideo"
-                                        style="margin-right: 25px;">
-                                    <label> Categoría</label>
-                                    <select class="form-control" id="updateVideoModal">
-
-                                    </select>
-                                </form>
+                <div class="modal fade-scale show active" id="myModal8" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Update</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="button" id="closeButton" class="btn btn-default"
-                                data-dismiss="modal">Close</button>
-                            <button type="button" id="saveChangesVideo" class="btn btn-primary" data-dismiss="modal">
-                                Save Changes </button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <img class=" col-5 col-sm-3 col-md-3 col-lg-4" src="img/actualizar.png">
+                                <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
+                                    <form id="form-update-categoria" class="form-update" name="formUpdateCategoria"
+                                        style="align-items:center;">
+                                        <label> ID </label>
+                                        <input ng-model="video._id" class="form-control" type="text" required>
+                                        <label> Nombre </label>
+                                        <input ng-model="video.nombre" class="form-control" type="text" required>
+                                        <label> URL </label>
+                                        <input class="form-control" type="url" ng-model="video.url"
+                                            style="margin-right: 25px;">
+                                        <label> Categoría</label>
+                                        <select class="form-control" ng-model="video.categoria"
+                                            ng-options="categoria._id as categoria.nombre for categoria in categorias">
+                                            <!-- <select ng-model="myColor" ng-options="color.name for color in colors"></select> -->
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style=" justify-content: center;">
+                                <button type="button" id="closeButton" class="btn btn-default"
+                                    data-dismiss="modal">Close</button>
+                                <button type="button" ng-click="modificarVideo()" class="btn btn-primary"
+                                    data-dismiss="modal">
+                                    Save Changes </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="modal fade-scale" id="myModal9" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Show Video</h4>
-                        </div>
-                        <div class="modal-body" style="padding: 30px;">
-                            <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
-                                <form class="form-update" style="grid-template-columns: 25% 55%;">
-                                    <label> Nombre </label>
-                                    <span id="viewNameVideo"></span>
-                                    <label> URL </label>
-                                    <span id="viewURLVideo"></span></span>
-                                    <label> Categoría</label>
-                                    <span id="viewCatVideo"></span>
-                                </form>
+                <div class="modal fade-scale" id="myModal9" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel">Show Video</h4>
                             </div>
-                        </div>
-                        <div class="modal-footer" style=" justify-content: center;">
-                            <button type="input" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <div class="modal-body" style="padding: 30px;">
+                                <div class="col-12 col-sm-9 col-md-9 col-lg-8 update-contenedor">
+                                    <form class="form-update" style="grid-template-columns: 25% 55%;">
+                                        <label> Nombre </label>
+                                        <span id="viewNameVideo"></span>
+                                        <label> URL </label>
+                                        <span id="viewURLVideo"></span></span>
+                                        <label> Categoría</label>
+                                        <span id="viewCatVideo"></span>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style=" justify-content: center;">
+                                <button type="input" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
