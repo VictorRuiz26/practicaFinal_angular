@@ -10,7 +10,9 @@ angular.module("Trabajo", [])
     .controller("main_ctlr", function ($scope) {
 
         $scope.host = "http://localhost:8080";
-        $scope.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU2NTY2MjEsImV4cCI6MTY1NTY3NDYyMX0.cFstifqoYkuAzn94al4OwUBgFhOBc6EsmqbgVs8DB18";
+
+        // $scope.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmE3N2E3MGQyZGI0YTJiZjI3NTcwNzQiLCJpYXQiOjE2NTU2MjQwMDEsImV4cCI6MTY1NTY0MjAwMX0.3M9ITt3shDmMgT7tULFtfCNPGtvOaTeEUns-lxQqaGM";
+        $scope.token = window.sessionStorage.getItem("tokenAdmin");
 
         $scope.cerrarSesion = function () {
             console.log('ESTAMOS CON ANGULAR');

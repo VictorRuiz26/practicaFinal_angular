@@ -9,11 +9,11 @@ const getUsers = async (req, res) => {
 };
 
 const postUsers = async (req, res) => {
-    const { nombre, correo, password, estado = true } = req.body;
+    const { nombre, correo, password, estado = true, rol = 'USER_ROL' } = req.body;
     const token = req.header("Authorization");
     const decoded = jwt_decode(token);
     const padre = decoded.uid;
-    const nuevo_usuario = new User({ nombre, correo, password, padre, estado });
+    const nuevo_usuario = new User({ nombre, correo, password, padre, estado, rol });
 
     // Verificar si el correo existe
 
