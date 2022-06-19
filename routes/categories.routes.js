@@ -9,6 +9,8 @@ const { getCategories,
 
 
 const { validarCampos } = require("../middlewares/validacion");
+const { validarJWT } = require("../middlewares/validar-jwt");
+const { esAdminRole } = require("../middlewares/validar-roles");
 
 /**
  * Se van importando los diferentes controladores creados en la carpeta controllers.
@@ -18,20 +20,30 @@ const { validarCampos } = require("../middlewares/validacion");
 
 let router = new Router();
 
-router.get('/', getCategories);
+router.get('/', [
+    validarJWT,
+    esAdminRole,
+    validarCampos
+], getCategories);
 
 router.post('/', [
+    validarJWT,
+    esAdminRole,
     check('nombre', 'El nombre es obligatorio').notEmpty(),
     //check('nombre', 'El nombre no es válido').isString(),
     validarCampos
 ], postCategories);
 
 router.put('/:id', [
+    validarJWT,
+    esAdminRole,
     check('id', 'El id no es valido').isMongoId(),
     validarCampos
 ], putCategories);
 
 router.delete('/:id', [
+    validarJWT,
+    esAdminRole,
     check('id', 'El id no es valido').isMongoId(),
     validarCampos
 ], deleteCategories);

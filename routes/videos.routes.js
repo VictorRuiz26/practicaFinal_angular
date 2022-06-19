@@ -37,6 +37,7 @@ router.post('/', [
 
 router.put('/:id', [
     validarJWT,
+    esAdminRole,
     check('id', 'El id no es valido').isMongoId(),
     validarCampos
 ], putVideos);
