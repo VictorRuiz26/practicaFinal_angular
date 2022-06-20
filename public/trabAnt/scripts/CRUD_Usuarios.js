@@ -33,7 +33,7 @@ $( document ).ready(function() {
 function cerrarSesion() {
     sessionStorage.clear()
     // sessionStorage.removeItem('tokenUser');
-    window.location.href="login.html";
+    window.location.href="index.html";
 }
 
 
@@ -138,7 +138,7 @@ function getUsers() {
             paginar(paginaActual, result.total);
     })
 
-.catch(error => { window.location.href="login.html"; });
+.catch(error => { window.location.href="index.html"; });
 
 }
 

@@ -18,7 +18,7 @@ angular.module("Trabajo", [])
             console.log('ESTAMOS CON ANGULAR');
             sessionStorage.clear()
             // sessionStorage.removeItem('tokenUser');
-            window.location.href = "login.html";
+            window.location.href = "index.html";
         }
     })
 
@@ -42,7 +42,7 @@ angular.module("Trabajo", [])
                 // console.log(response);
                 $scope.getUsuarios();
             }).catch(function (error) {
-                window.location.href="login.html" ;
+                window.location.href="index.html" ;
             })
 
         };
@@ -62,7 +62,7 @@ angular.module("Trabajo", [])
                 // console.log(response);
                 $scope.getUsuarios();
             })
-                .catch(function (error) {    window.location.href="login.html" ; })
+                .catch(function (error) {    window.location.href="index.html" ; })
         };
 
         $scope.getUsuarios = function () {
@@ -78,7 +78,7 @@ angular.module("Trabajo", [])
                 $scope.usuarios = response.data.productos;
                 // console.log(response);
             }).catch(function (error) {
-                window.location.href="login.html" ;
+                window.location.href="index.html" ;
             })
         };
 
@@ -103,7 +103,7 @@ angular.module("Trabajo", [])
                             // console.log(response);
                             $scope.getUsuarios();
                         }).catch(function (error) {
-                            window.location.href="login.html" ;
+                            window.location.href="index.html" ;
                         })
                     }
                     console.log('Pasted content: ', text);

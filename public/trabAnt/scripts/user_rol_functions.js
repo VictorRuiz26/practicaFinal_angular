@@ -51,12 +51,12 @@ function getVideos() {
             
 
         })
-        .catch(error => { window.location.href="login.html"; });
+        .catch(error => { window.location.href="index.html"; });
 
 }
 
 function cerrarSesion() {
     sessionStorage.clear()
     // sessionStorage.removeItem('tokenUser');
-    window.location.href="login.html";
+    window.location.href="index.html";
 }

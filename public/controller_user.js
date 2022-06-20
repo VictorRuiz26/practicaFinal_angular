@@ -18,7 +18,7 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
             console.log('ESTAMOS CON ANGULAR');
             sessionStorage.clear()
             // sessionStorage.removeItem('tokenUser');
-            window.location.href = "login.html";
+            window.location.href = "index.html";
         }
     })
     .controller("videos", function ($scope, $http) {
@@ -45,7 +45,7 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
                     $scope.array[indice.nombre] = categoriaArray 
                 });
             })
-                .catch(function (error) {  window.location.href="login.html" })
+                .catch(function (error) {  window.location.href="index.html" })
 
           
             /**
@@ -65,7 +65,7 @@ angular.module("Videos", []).filter('trusted', ['$sce', function ($sce) {
                     if ($scope.array[indice.categoria.nombre] != null) $scope.array[indice.categoria.nombre].push(indice.url); 
                 });
             })
-                .catch(function (error) {   window.location.href="login.html"})
+                .catch(function (error) {   window.location.href="index.html"})
         };
 
         $scope.getVideos();

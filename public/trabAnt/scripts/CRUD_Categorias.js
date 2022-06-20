@@ -68,7 +68,7 @@ function getCategorias() {
             paginarCategorias(paginaActual, result.total);                    
     })
         
-.catch(error => { window.location.href="login.html"; });
+.catch(error => { window.location.href="index.html"; });
 
 }
 

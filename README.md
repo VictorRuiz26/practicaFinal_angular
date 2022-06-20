@@ -21,4 +21,9 @@ git commit -m "nombre del commit"
 
 git push -u origin <nombreRama>
 ```
+ADMIN USER: grupo6@gmail.com
+            gSXjwkNXNxHGcNW9PVr8
 
+
+video: Fernando Alonso
+url: https://www.youtube.com/watch?v=Olv2vNIoEvU
