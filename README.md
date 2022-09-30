@@ -1,6 +1,6 @@
 # Práctica final de Laboratorios de Ingeniería de Software
 ## Inicio del trabajo
-Cada integrante a la hora de empezar con su parte debe iniciar git en la carpeta donde vaya a tranajar.
+Cada integrante a la hora de empezar con su parte debe iniciar git en la carpeta donde vaya a trabajar.
 ```bash
 git init
 ```
